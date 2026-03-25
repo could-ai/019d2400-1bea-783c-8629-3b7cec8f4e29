@@ -14,16 +14,112 @@ class AnTraApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2E7D32), // Màu xanh lá cây đậm mang cảm giác thiên nhiên
+          seedColor: const Color(0xFF2E7D32), // Màu xanh lá cây đậm
           brightness: Brightness.light,
         ),
         useMaterial3: true,
-        fontFamily: 'Georgia', // Sử dụng font có chân tạo cảm giác cổ điển, thanh lịch (nếu có)
+        fontFamily: 'Georgia', // Font có chân tạo cảm giác cổ điển, thanh lịch
       ),
       initialRoute: '/',
       routes: {
         '/': (context) => const AnTraIntroScreen(),
       },
+    );
+  }
+}
+
+/// Widget Logo An Trà được thiết kế bằng Flutter UI (Vector-like)
+class AnTraLogo extends StatelessWidget {
+  final double size;
+  final Color color;
+
+  const AnTraLogo({
+    super.key,
+    this.size = 80,
+    this.color = Colors.white,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Biểu tượng Logo (Icon + Vòng tròn Zen)
+        Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: color.withOpacity(0.8), width: 2.5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Chiếc lá trà
+              Icon(
+                Icons.energy_savings_leaf,
+                color: color,
+                size: size * 0.55,
+              ),
+              // Điểm nhấn nhỏ (giọt sương/trà)
+              Positioned(
+                top: size * 0.15,
+                right: size * 0.25,
+                child: Container(
+                  width: size * 0.12,
+                  height: size * 0.12,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD4AF37), // Màu vàng gold sang trọng
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFD4AF37).withOpacity(0.5),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: size * 0.2),
+        // Tên thương hiệu
+        Text(
+          'AN TRÀ',
+          style: TextStyle(
+            color: color,
+            fontSize: size * 0.45,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 6.0,
+            shadows: [
+              Shadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: size * 0.05),
+        // Slogan hoặc năm thành lập
+        Text(
+          'T I N H  H O A  T R À  V I Ệ T',
+          style: TextStyle(
+            color: color.withOpacity(0.9),
+            fontSize: size * 0.14,
+            letterSpacing: 3.0,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -38,11 +134,12 @@ class AnTraIntroScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 300.0,
+            expandedHeight: 400.0, // Tăng chiều cao để hiển thị logo đẹp hơn
             floating: false,
             pinned: true,
             backgroundColor: const Color(0xFF2E7D32),
             flexibleSpace: FlexibleSpaceBar(
+              // Chỉ hiển thị title nhỏ khi cuộn lên (collapsed)
               title: const Text(
                 'An Trà',
                 style: TextStyle(
@@ -55,21 +152,29 @@ class AnTraIntroScreen extends StatelessWidget {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
+                  // Ảnh nền đồi chè
                   Image.network(
                     'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=1000&auto=format&fit=crop',
                     fit: BoxFit.cover,
                   ),
-                  // Lớp phủ mờ để chữ dễ đọc hơn
+                  // Lớp phủ gradient tối dần để làm nổi bật Logo
                   const DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.transparent,
-                          Colors.black54,
+                          Colors.black45,
+                          Colors.black87,
                         ],
                       ),
+                    ),
+                  ),
+                  // Hiển thị Logo ở giữa Header
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 40.0), // Đẩy lên một chút so với title
+                      child: AnTraLogo(size: 90, color: Colors.white),
                     ),
                   ),
                 ],
